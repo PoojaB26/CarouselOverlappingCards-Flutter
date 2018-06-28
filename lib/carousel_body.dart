@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:carousel_effect/card_info.dart';
 
 const double _mViewportFraction = 0.9;
 
@@ -10,7 +11,7 @@ class CarouselBody extends StatefulWidget {
 }
 
 class _CarouselBodyState extends State<CarouselBody> {
-  final PageController _backgroundController = PageController();
+  final PageController _backgroundController = PageController(viewportFraction: _mViewportFraction);
   final PageController _cardController =
   PageController(viewportFraction: _mViewportFraction);
   ValueNotifier<double> selectedIndex = ValueNotifier<double>(0.0);
@@ -20,7 +21,9 @@ class _CarouselBodyState extends State<CarouselBody> {
     if (notification.depth == 0 && notification is ScrollUpdateNotification) {
       selectedIndex.value = leader.page;
       if (follower.page != leader.page) {
-        follower.position.jumpToWithoutSettling(leader.position.pixels); // ignore: deprecated_member_use
+        //follower.animateToPage(leader.page.toInt(), duration: Duration(milliseconds: 10000), curve: Curves.easeOut);
+        follower.position.jumpToWithoutSettling(leader.position.pixels);// ignore: deprecated_member_use
+        //return true --> makes the card also take uneven space like the bg
       }
       setState(() {});
     }
@@ -45,7 +48,6 @@ class _CarouselBodyState extends State<CarouselBody> {
             children: _buildBackgroundImages(),
           ),
         ),
-
         NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification notification) {
             return _handleNotification(
@@ -62,23 +64,38 @@ class _CarouselBodyState extends State<CarouselBody> {
 
   Iterable<Widget> _buildBackgroundImages() {
     final List<Widget> backgroundPages = <Widget>[];
-    for (int index = 0; index < 10; index++) {
 
-      var imageAsset = 'assets/images/img${index + 1}.jpg';
+    double bgHeight = MediaQuery.of(context).size.height;
+    double bgWidth = MediaQuery.of(context).size.width * 0.8;
+
+
+    for (int index = 0; index < 6; index++) {
+
+      var alignment = Alignment.center.add(
+          Alignment((selectedIndex.value - index), 0.0));
+      var resizeFactor =
+      (1 - (((selectedIndex.value - index).abs() * 0.4).clamp(0.0, 1.0)));
+
+      var imageAsset = 'assets/images/img${index + 1}.jpeg';
      // var image = Image.asset(imageAsset, fit: BoxFit.cover);
 
 
-      backgroundPages.add(Container(
-        width: double.infinity,
-        decoration: new BoxDecoration(
-          image: new DecorationImage(
-            image: new AssetImage(imageAsset),
-            fit: BoxFit.cover,
+      backgroundPages.add(SizedBox(
+        width: bgWidth ,
+        height: bgHeight * resizeFactor,
+        child: Container(
+          margin: new EdgeInsets.only(bottom: 80.0),
+          alignment: alignment,
+          decoration: new BoxDecoration(
+            image: new DecorationImage(
+              image: new AssetImage(imageAsset),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: Opacity(
-          opacity: 0.3,
+          child: Opacity(
+            opacity: 0.3,
 
+          ),
         ),
       ));
     }
@@ -88,7 +105,7 @@ class _CarouselBodyState extends State<CarouselBody> {
   final roundedCard = new Container(
     // child: image,
     decoration: new BoxDecoration(
-      color: new Color(0xFF333366),
+      color: Colors.white,
       shape: BoxShape.rectangle,
       borderRadius: new BorderRadius.circular(8.0),
       boxShadow: <BoxShadow>[
@@ -99,13 +116,27 @@ class _CarouselBodyState extends State<CarouselBody> {
         ),
       ],
     ),
+
+    child: new Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(height: 10.0,),
+        category,
+        SizedBox(height: 25.0,),
+        title,
+        SizedBox(height: 15.0,),
+        subTitle,
+      ],
+    ),
   );
 
   Iterable<Widget> _buildCards() {
     final List<Widget> pages = <Widget>[];
     double bgHeight = MediaQuery.of(context).size.height * 0.3;
     double bgWidth = MediaQuery.of(context).size.width * 0.8; // changes width of the image
-    for (int index = 0; index < 10; index++) {
+    for (int index = 0; index < 6; index++) {
       var alignment = Alignment.center.add(
           Alignment((selectedIndex.value - index) * _mViewportFraction, 0.0));
       var resizeFactor =
@@ -114,6 +145,7 @@ class _CarouselBodyState extends State<CarouselBody> {
           Container(
             alignment: alignment,
             child: new Container(
+              margin: new EdgeInsets.only(top: 50.0),
               width: bgWidth * resizeFactor,
               height: bgHeight * resizeFactor,
               child: GestureDetector(
