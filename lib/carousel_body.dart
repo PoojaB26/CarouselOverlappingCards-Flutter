@@ -15,7 +15,7 @@ class _CarouselBodyState extends State<CarouselBody> {
   PageController(viewportFraction: _mViewportFraction);
   ValueNotifier<double> selectedIndex = ValueNotifier<double>(0.0);
 
-  bool _handlePageNotification(ScrollNotification notification,
+  bool _handleNotification(ScrollNotification notification,
       PageController leader, PageController follower) {
     if (notification.depth == 0 && notification is ScrollUpdateNotification) {
       selectedIndex.value = leader.page;
@@ -31,13 +31,24 @@ class _CarouselBodyState extends State<CarouselBody> {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        PageView(
+        /*PageView(
           controller: _backgroundController,
           children: _buildBackgroundImages(),
-        ),
+        ),*/
         NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification notification) {
-            return _handlePageNotification(
+            return _handleNotification(
+                notification, _cardController, _backgroundController);
+          },
+          child: PageView(
+            controller: _backgroundController,
+            children: _buildBackgroundImages(),
+          ),
+        ),
+
+        NotificationListener<ScrollNotification>(
+          onNotification: (ScrollNotification notification) {
+            return _handleNotification(
                 notification, _cardController, _backgroundController);
           },
           child: PageView(
