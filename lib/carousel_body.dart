@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_effect/card_info.dart';
+import 'package:carousel_cards/card_info.dart';
 
 const double _mViewportFraction = 0.9;
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_effect/carousel_body.dart';
+import 'package:carousel_cards/carousel_body.dart';
 
 class CarouselScreen extends StatelessWidget{
   @override

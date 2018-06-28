@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_effect/carousel_screen.dart';
+import 'package:carousel_cards/carousel_screen.dart';
 
 void main() => runApp(MyApp());
 

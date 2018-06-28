@@ -1,5 +1,5 @@
-name: carousel_effect
-description: Carousel Effect
+name: carousel_cards
+description: Carousel Cards
 
 dependencies:
   flutter:
