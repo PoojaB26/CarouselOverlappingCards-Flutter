@@ -92,8 +92,8 @@ class _CarouselBodyState extends State<CarouselBody> {
 
   Iterable<Widget> _buildCards() {
     final List<Widget> pages = <Widget>[];
-    double pictureHeight = MediaQuery.of(context).size.height * 0.3;
-    double pictureWidth = MediaQuery.of(context).size.width * 0.8; // changes width of the image
+    double bgHeight = MediaQuery.of(context).size.height * 0.3;
+    double bgWidth = MediaQuery.of(context).size.width * 0.8; // changes width of the image
     for (int index = 0; index < 10; index++) {
       var alignment = Alignment.center.add(
           Alignment((selectedIndex.value - index) * _mViewportFraction, 0.0));
@@ -103,8 +103,8 @@ class _CarouselBodyState extends State<CarouselBody> {
           Container(
             alignment: alignment,
             child: new Container(
-              width: pictureWidth * resizeFactor,
-              height: pictureHeight * resizeFactor,
+              width: bgWidth * resizeFactor,
+              height: bgHeight * resizeFactor,
               child: GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(
@@ -118,21 +118,7 @@ class _CarouselBodyState extends State<CarouselBody> {
                 },
                 child: Hero(
                   tag: index,
-                  child:  new Container(
-                    // child: image,
-                    decoration: new BoxDecoration(
-                      color: new Color(0xFF333366),
-                      shape: BoxShape.rectangle,
-                      borderRadius: new BorderRadius.circular(8.0),
-                      boxShadow: <BoxShadow>[
-                        new BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 10.0,
-                          offset: new Offset(0.0, 10.0),
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: roundedCard
                 ),
               ),
             ),
