@@ -77,7 +77,6 @@ class _CarouselBodyState extends State<CarouselBody> {
       (1 - (((selectedIndex.value - index).abs() * 0.4).clamp(0.0, 1.0)));
 
       var imageAsset = 'assets/images/img${index + 1}.jpeg';
-     // var image = Image.asset(imageAsset, fit: BoxFit.cover);
 
 
       backgroundPages.add(SizedBox(
